@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Operador</title>
+	<link rel="stylesheet" href="jquery.mobile-1.4.5.min.css">
+	<script src="jquery.min.js"></script>
+	<script src="index.js"></script>
+	<script src="jquery.mobile-1.4.5.js"></script>
+	<script type="text/javascript">
+		function aleatorio(inicio, fin){
+			return Math.floor((Math.random() * fin) + inicio);
+		}
+		var milisegundosRetardo=500;
+		var retardosSegundo=1000/milisegundosRetardo;
+		var tiempoRestante;
+		var pregunta;
+		var respuesta;
+		var aciertos=0;
+		var tarea;
+		var parar=false;
+		
+		var tareas=[{
+			nombre:"Tabla del 2",
+			tipo: "aleatorio",
+			tiempo: 5*retardosSegundo,
+			aciertos: 10,
+			preguntas:[
+				{ texto:"2x1=", respuesta:"2" },
+				{ texto:"2x2=", respuesta:"4" },
+				{ texto:"2x3=", respuesta:"6" },
+				{ texto:"2x4=", respuesta:"8" },
+				{ texto:"2x5=", respuesta:"10" },
+				{ texto:"2x6=", respuesta:"12" },
+				{ texto:"2x7=", respuesta:"14" },
+				{ texto:"2x8=", respuesta:"16" },
+				{ texto:"2x9=", respuesta:"18" },
+				{ texto:"2x10=", respuesta:"20" },
+				{ texto:"1x2=", respuesta:"2" },
+				{ texto:"3x2=", respuesta:"6" },
+				{ texto:"4x2=", respuesta:"8" },
+				{ texto:"5x2=", respuesta:"10" },
+				{ texto:"6x2=", respuesta:"12" },
+				{ texto:"7x2=", respuesta:"14" },
+				{ texto:"8x2=", respuesta:"16" },
+				{ texto:"9x2=", respuesta:"18" },
+				{ texto:"10x2=", respuesta:"20" }
+			]
+		},{
+			nombre:"Tabla del 3",
+			tipo: "aleatorio",
+			tiempo: 5*retardosSegundo,
+			aciertos: 10,
+			preguntas:[
+				{ texto:"3x1=", respuesta:"3" },
+				{ texto:"3x2=", respuesta:"6" },
+				{ texto:"3x3=", respuesta:"9" },
+				{ texto:"3x4=", respuesta:"12" },
+				{ texto:"3x5=", respuesta:"15" },
+				{ texto:"3x6=", respuesta:"18" },
+				{ texto:"3x7=", respuesta:"21" },
+				{ texto:"3x8=", respuesta:"24" },
+				{ texto:"3x9=", respuesta:"27" },
+				{ texto:"3x10=", respuesta:"30" },
+				{ texto:"1x3=", respuesta:"3" },
+				{ texto:"2x3=", respuesta:"6" },
+				{ texto:"4x3=", respuesta:"12" },
+				{ texto:"5x3=", respuesta:"15" },
+				{ texto:"6x3=", respuesta:"18" },
+				{ texto:"7x3=", respuesta:"21" },
+				{ texto:"8x3=", respuesta:"24" },
+				{ texto:"9x3=", respuesta:"27" },
+				{ texto:"10x3=", respuesta:"30" }
+			]
+		},{
+			nombre:"Tabla del 4",
+			tipo: "aleatorio",
+			tiempo: 5*retardosSegundo,
+			aciertos: 10,
+			preguntas:[
+				{ texto:"4x1=", respuesta:"4" },
+				{ texto:"4x2=", respuesta:"8" },
+				{ texto:"4x3=", respuesta:"12" },
+				{ texto:"4x4=", respuesta:"16" },
+				{ texto:"4x5=", respuesta:"20" },
+				{ texto:"4x6=", respuesta:"24" },
+				{ texto:"4x7=", respuesta:"28" },
+				{ texto:"4x8=", respuesta:"32" },
+				{ texto:"4x9=", respuesta:"36" },
+				{ texto:"4x10=", respuesta:"40" },
+				{ texto:"1x4=", respuesta:"4" },
+				{ texto:"2x4=", respuesta:"8" },
+				{ texto:"3x4=", respuesta:"12" },
+				{ texto:"5x4=", respuesta:"20" },
+				{ texto:"6x4=", respuesta:"24" },
+				{ texto:"7x4=", respuesta:"28" },
+				{ texto:"8x4=", respuesta:"32" },
+				{ texto:"9x4=", respuesta:"36" },
+				{ texto:"10x4=", respuesta:"40" }
+			]
+		},{
+			nombre:"Tabla del 5",
+			tipo: "aleatorio",
+			tiempo: 5*retardosSegundo,
+			aciertos: 10,
+			preguntas:[
+				{ texto:"5x1=", respuesta:"5" },
+				{ texto:"5x2=", respuesta:"10" },
+				{ texto:"5x3=", respuesta:"15" },
+				{ texto:"5x4=", respuesta:"20" },
+				{ texto:"5x5=", respuesta:"25" },
+				{ texto:"5x6=", respuesta:"30" },
+				{ texto:"5x7=", respuesta:"35" },
+				{ texto:"5x8=", respuesta:"40" },
+				{ texto:"5x9=", respuesta:"45" },
+				{ texto:"5x10=", respuesta:"50" },
+				{ texto:"1x5=", respuesta:"5" },
+				{ texto:"2x5=", respuesta:"10" },
+				{ texto:"3x5=", respuesta:"15" },
+				{ texto:"4x5=", respuesta:"20" },
+				{ texto:"6x5=", respuesta:"30" },
+				{ texto:"7x5=", respuesta:"35" },
+				{ texto:"8x5=", respuesta:"40" },
+				{ texto:"9x5=", respuesta:"45" },
+				{ texto:"10x5=", respuesta:"50" }
+			]
+		},{
+			nombre:"Tabla del 6",
+			tipo: "aleatorio",
+			tiempo: 5*retardosSegundo,
+			aciertos: 10,
+			preguntas:[
+				{ texto:"6x1=", respuesta:"6" },
+				{ texto:"6x2=", respuesta:"12" },
+				{ texto:"6x3=", respuesta:"18" },
+				{ texto:"6x4=", respuesta:"24" },
+				{ texto:"6x5=", respuesta:"30" },
+				{ texto:"6x6=", respuesta:"36" },
+				{ texto:"6x7=", respuesta:"42" },
+				{ texto:"6x8=", respuesta:"48" },
+				{ texto:"6x9=", respuesta:"54" },
+				{ texto:"6x10=", respuesta:"60" },
+				{ texto:"1x6=", respuesta:"6" },
+				{ texto:"2x6=", respuesta:"12" },
+				{ texto:"3x6=", respuesta:"18" },
+				{ texto:"4x6=", respuesta:"24" },
+				{ texto:"5x6=", respuesta:"30" },
+				{ texto:"7x6=", respuesta:"42" },
+				{ texto:"8x6=", respuesta:"48" },
+				{ texto:"9x6=", respuesta:"54" },
+				{ texto:"10x6=", respuesta:"60" }
+			]
+		},{
+			nombre:"Tabla del 7",
+			tipo: "aleatorio",
+			tiempo: 5*retardosSegundo,
+			aciertos: 10,
+			preguntas:[
+				{ texto:"7x1=", respuesta:"7" },
+				{ texto:"7x2=", respuesta:"14" },
+				{ texto:"7x3=", respuesta:"21" },
+				{ texto:"7x4=", respuesta:"28" },
+				{ texto:"7x5=", respuesta:"35" },
+				{ texto:"7x6=", respuesta:"42" },
+				{ texto:"7x7=", respuesta:"49" },
+				{ texto:"7x8=", respuesta:"56" },
+				{ texto:"7x9=", respuesta:"63" },
+				{ texto:"7x10=", respuesta:"70" },
+				{ texto:"1x7=", respuesta:"7" },
+				{ texto:"2x7=", respuesta:"14" },
+				{ texto:"3x7=", respuesta:"21" },
+				{ texto:"4x7=", respuesta:"28" },
+				{ texto:"5x7=", respuesta:"35" },
+				{ texto:"6x7=", respuesta:"42" },
+				{ texto:"8x7=", respuesta:"56" },
+				{ texto:"9x7=", respuesta:"63" },
+				{ texto:"10x7=", respuesta:"70" }
+			]
+		},{
+			nombre:"Tabla del 8",
+			tipo: "aleatorio",
+			tiempo: 5*retardosSegundo,
+			aciertos: 10,
+			preguntas:[
+				{ texto:"8x1=", respuesta:"8" },
+				{ texto:"8x2=", respuesta:"16" },
+				{ texto:"8x3=", respuesta:"24" },
+				{ texto:"8x4=", respuesta:"32" },
+				{ texto:"8x5=", respuesta:"40" },
+				{ texto:"8x6=", respuesta:"48" },
+				{ texto:"8x7=", respuesta:"56" },
+				{ texto:"8x8=", respuesta:"64" },
+				{ texto:"8x9=", respuesta:"72" },
+				{ texto:"8x10=", respuesta:"80" },
+				{ texto:"1x8=", respuesta:"8" },
+				{ texto:"2x8=", respuesta:"16" },
+				{ texto:"3x8=", respuesta:"24" },
+				{ texto:"4x8=", respuesta:"32" },
+				{ texto:"5x8=", respuesta:"40" },
+				{ texto:"6x8=", respuesta:"48" },
+				{ texto:"7x8=", respuesta:"56" },
+				{ texto:"9x8=", respuesta:"72" },
+				{ texto:"10x8=", respuesta:"80" }
+			]
+		},{
+			nombre:"Tabla del 9",
+			tipo: "aleatorio",
+			tiempo: 5*retardosSegundo,
+			aciertos: 10,
+			preguntas:[
+				{ texto:"9x1=", respuesta:"9" },
+				{ texto:"9x2=", respuesta:"18" },
+				{ texto:"9x3=", respuesta:"27" },
+				{ texto:"9x4=", respuesta:"36" },
+				{ texto:"9x5=", respuesta:"45" },
+				{ texto:"9x6=", respuesta:"54" },
+				{ texto:"9x7=", respuesta:"63" },
+				{ texto:"9x8=", respuesta:"72" },
+				{ texto:"9x9=", respuesta:"81" },
+				{ texto:"9x10=", respuesta:"90" },
+				{ texto:"1x9=", respuesta:"9" },
+				{ texto:"2x9=", respuesta:"18" },
+				{ texto:"3x9=", respuesta:"27" },
+				{ texto:"4x9=", respuesta:"36" },
+				{ texto:"5x9=", respuesta:"45" },
+				{ texto:"6x9=", respuesta:"54" },
+				{ texto:"7x9=", respuesta:"63" },
+				{ texto:"8x9=", respuesta:"72" },
+				{ texto:"10x9=", respuesta:"90" }
+			]
+		}]
+		$(document).ready(function(){
+			$("button").click(function(){
+				if($(this).text()=="Volver"){
+					parar=true;
+					$.mobile.changePage("#paginaMenu");
+				}else if($(this).text()=="OK"){
+					tiempoRestante=1;
+				}else if($(this).text()=="C"){
+					$('#areaTexto').text(pregunta.texto);
+					respuesta="";
+				}else{
+					$('#areaTexto').text($('#areaTexto').text()+$(this).text());
+					respuesta=respuesta+$(this).text();
+				}
+			});
+			for(var i=0;i<tareas.length;i++){
+				$('#listaTareas').append('<li><a href="#paginaTarea" onClick="javascript:iniciaTarea('+i+');">'+tareas[i].nombre+"</a></li>");
+			}
+			$('#listaTareas').listview('refresh');
+		});
+		
+		
+		function iniciaTarea(posicionTarea){
+			tarea=tareas[posicionTarea];
+			aciertos=0;
+			$('#campoAciertos').text(aciertos+" de "+tarea.aciertos);
+			pregunta=tarea.preguntas[aleatorio(0,tarea.preguntas.length-1)];
+			$('#areaTexto').text(pregunta.texto);
+			$("#areaTexto").removeClass("acierto");					
+			$("#areaTexto").removeClass("fin_tiempo");
+			$(".boton_numero").prop("disabled",false);
+			tiempoRestante=tarea.tiempo;
+			respuesta="";
+			parar=false;
+			setTimeout(procesaTiempo, milisegundosRetardo);
+		}
+		
+		function procesaTiempo(){
+			if(!parar){
+				tiempoRestante=tiempoRestante-1;
+				$("#slider-1").val((tarea.tiempo-tiempoRestante)*100/tarea.tiempo).slider().slider("refresh");;
+				if(tiempoRestante>0){
+					setTimeout(procesaTiempo, milisegundosRetardo);
+				}else if(tiempoRestante==0){
+					$(".boton_numero").prop("disabled",true);
+					if(respuesta==pregunta.respuesta){
+						aciertos++;
+						$("#areaTexto").addClass("acierto");						
+					}else{
+						aciertos=0;
+						$("#areaTexto").addClass("fin_tiempo");
+					}
+					$('#campoAciertos').text(aciertos+" de "+tarea.aciertos);
+					if(aciertos<tarea.aciertos){
+						setTimeout(procesaTiempo, milisegundosRetardo);
+					}else{
+						$('#areaTexto').text("Completado");
+					}
+				}else{
+					$("#areaTexto").removeClass("acierto");					
+					$("#areaTexto").removeClass("fin_tiempo");
+					pregunta=tarea.preguntas[aleatorio(0,tarea.preguntas.length-1)];
+					$('#areaTexto').text(pregunta.texto);
+					$(".boton_numero").prop("disabled",false);
+					tiempoRestante=tarea.tiempo;
+					respuesta="";			
+					$("#slider-1").val("0").slider().slider("refresh");;
+					setTimeout(procesaTiempo, milisegundosRetardo);
+				}
+			}
+		}
+	</script>
+	<style>
+		.full-width-slider input{
+			display:none;
+		}
+		.full-width-slider .ui-slider-track{
+			margin-left: 20px;
+		}
+		.area_texto{
+			font-size:400%;
+			text-align:center;
+			vertical-align:middle;
+		}
+		.fin_tiempo{
+			background-color:red;
+		}
+		.acierto{
+			background-color:green;
+		}
+		.boton_numero{}
+	</style>
+</head>
+<body>
+<div data-role="page" id="paginaMenu">
+	<div data-role="header">
+		<h1>Tareas</h1>
+	</div>
+	<div role="main" class="ui-content jqm-content">
+		<ul data-role="listview" id="listaTareas">
+		</ul>	
+	</div>
+</div>
+<div data-role="page" id="paginaTarea">
+	<div role="main" class="ui-content jqm-content">
+		<div  class="ui-gird-a">
+			<form class="full-width-slider">
+				<input id="slider-1" name="slider-1" type="range" min="0" max="100" value="0" data-highlight="true"/>
+			</form>
+			<div id="areaTexto" class="area_texto"></div>
+			<div id="areaAciertos">
+				<div class="ui-grid-c">
+					<div class="ui-block-a">Aciertos:</div>
+					<div class="ui-block-b" id="campoAciertos"></div>
+					<div class="ui-block-c"><button id="botonVolver">Volver</button></div>
+				</div class="ui-grid-c">
+			</div>
+		</div>
+		<div class="ui-grid-b">
+			<div class="ui-block-a"><button class="ui-btn ui-corner-all boton_numero">1</button></div>
+			<div class="ui-block-b"><button class="ui-btn ui-corner-all boton_numero">2</button></div>
+			<div class="ui-block-c"><button class="ui-btn ui-corner-all boton_numero">3</button></div>
+		</div>
+		<div class="ui-grid-b">
+			<div class="ui-block-a"><button class="ui-btn ui-corner-all boton_numero">4</button></div>
+			<div class="ui-block-b"><button class="ui-btn ui-corner-all boton_numero">5</button></div>
+			<div class="ui-block-c"><button class="ui-btn ui-corner-all boton_numero">6</button></div>
+		</div>
+		<div class="ui-grid-b">
+			<div class="ui-block-a"><button class="ui-btn ui-corner-all boton_numero">7</button></div>
+			<div class="ui-block-b"><button class="ui-btn ui-corner-all boton_numero">8</button></div>
+			<div class="ui-block-c"><button class="ui-btn ui-corner-all boton_numero">9</button></div>
+		</div>
+		<div class="ui-grid-b">
+			<div class="ui-block-a"><button class="ui-btn ui-corner-all boton_numero">0</button></div>
+			<div class="ui-block-b"><button class="ui-btn ui-corner-all ui-icon-check boton_numero">OK</button></div>
+			<div class="ui-block-c"><button class="ui-btn ui-corner-all ui-icon-delete boton_numero">C</button></div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
