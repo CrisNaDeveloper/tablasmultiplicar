@@ -12,19 +12,19 @@
 		function aleatorio(inicio, fin){
 			return Math.floor((Math.random() * fin) + inicio);
 		}
-		var milisegundosRetardo=500;
+		var milisegundosRetardo=1000;
 		var retardosSegundo=1000/milisegundosRetardo;
 		var tiempoRestante;
 		var pregunta;
 		var respuesta;
 		var aciertos=0;
-		var tarea;
+		var tareaSeleccionada;
 		var parar=false;
 		
 		var tareas=[{
 			nombre:"Tabla del 2",
 			tipo: "aleatorio",
-			tiempo: 5*retardosSegundo,
+			tiempo: 10*retardosSegundo,
 			aciertos: 10,
 			preguntas:[
 				{ texto:"2x1=", respuesta:"2" },
@@ -50,7 +50,7 @@
 		},{
 			nombre:"Tabla del 3",
 			tipo: "aleatorio",
-			tiempo: 5*retardosSegundo,
+			tiempo: 10*retardosSegundo,
 			aciertos: 10,
 			preguntas:[
 				{ texto:"3x1=", respuesta:"3" },
@@ -76,7 +76,7 @@
 		},{
 			nombre:"Tabla del 4",
 			tipo: "aleatorio",
-			tiempo: 5*retardosSegundo,
+			tiempo: 10*retardosSegundo,
 			aciertos: 10,
 			preguntas:[
 				{ texto:"4x1=", respuesta:"4" },
@@ -102,7 +102,7 @@
 		},{
 			nombre:"Tabla del 5",
 			tipo: "aleatorio",
-			tiempo: 5*retardosSegundo,
+			tiempo: 10*retardosSegundo,
 			aciertos: 10,
 			preguntas:[
 				{ texto:"5x1=", respuesta:"5" },
@@ -128,7 +128,7 @@
 		},{
 			nombre:"Tabla del 6",
 			tipo: "aleatorio",
-			tiempo: 5*retardosSegundo,
+			tiempo: 10*retardosSegundo,
 			aciertos: 10,
 			preguntas:[
 				{ texto:"6x1=", respuesta:"6" },
@@ -154,7 +154,7 @@
 		},{
 			nombre:"Tabla del 7",
 			tipo: "aleatorio",
-			tiempo: 5*retardosSegundo,
+			tiempo: 10*retardosSegundo,
 			aciertos: 10,
 			preguntas:[
 				{ texto:"7x1=", respuesta:"7" },
@@ -180,7 +180,7 @@
 		},{
 			nombre:"Tabla del 8",
 			tipo: "aleatorio",
-			tiempo: 5*retardosSegundo,
+			tiempo: 10*retardosSegundo,
 			aciertos: 10,
 			preguntas:[
 				{ texto:"8x1=", respuesta:"8" },
@@ -206,7 +206,7 @@
 		},{
 			nombre:"Tabla del 9",
 			tipo: "aleatorio",
-			tiempo: 5*retardosSegundo,
+			tiempo: 10*retardosSegundo,
 			aciertos: 10,
 			preguntas:[
 				{ texto:"9x1=", respuesta:"9" },
@@ -246,22 +246,22 @@
 				}
 			});
 			for(var i=0;i<tareas.length;i++){
-				$('#listaTareas').append('<li><a href="#paginaTarea" onClick="javascript:iniciaTarea('+i+');">'+tareas[i].nombre+"</a></li>");
+				$('#listaTareas').append('<li><a id="filaTarea'+i+'" href="#paginaTarea" onClick="javascript:iniciaTarea('+i+');">'+tareas[i].nombre+"</a></li>");
 			}
 			$('#listaTareas').listview('refresh');
 		});
 		
 		
 		function iniciaTarea(posicionTarea){
-			tarea=tareas[posicionTarea];
+			tareaSeleccionada=posicionTarea;
 			aciertos=0;
-			$('#campoAciertos').text(aciertos+" de "+tarea.aciertos);
-			pregunta=tarea.preguntas[aleatorio(0,tarea.preguntas.length-1)];
+			$('#campoAciertos').text(aciertos+" de "+tareas[tareaSeleccionada].aciertos);
+			pregunta=tareas[tareaSeleccionada].preguntas[aleatorio(0,tareas[tareaSeleccionada].preguntas.length-1)];
 			$('#areaTexto').text(pregunta.texto);
 			$("#areaTexto").removeClass("acierto");					
 			$("#areaTexto").removeClass("fin_tiempo");
 			$(".boton_numero").prop("disabled",false);
-			tiempoRestante=tarea.tiempo;
+			tiempoRestante=tareas[tareaSeleccionada].tiempo;
 			respuesta="";
 			parar=false;
 			setTimeout(procesaTiempo, milisegundosRetardo);
@@ -270,7 +270,7 @@
 		function procesaTiempo(){
 			if(!parar){
 				tiempoRestante=tiempoRestante-1;
-				$("#slider-1").val((tarea.tiempo-tiempoRestante)*100/tarea.tiempo).slider().slider("refresh");;
+				$("#slider-1").val((tareas[tareaSeleccionada].tiempo-tiempoRestante)*100/tareas[tareaSeleccionada].tiempo).slider().slider("refresh");;
 				if(tiempoRestante>0){
 					setTimeout(procesaTiempo, milisegundosRetardo);
 				}else if(tiempoRestante==0){
@@ -281,20 +281,23 @@
 					}else{
 						aciertos=0;
 						$("#areaTexto").addClass("fin_tiempo");
+						$("#areaTexto").text($("#areaTexto").text()+"["+pregunta.respuesta+"]");
 					}
-					$('#campoAciertos').text(aciertos+" de "+tarea.aciertos);
-					if(aciertos<tarea.aciertos){
+					$('#campoAciertos').text(aciertos+" de "+tareas[tareaSeleccionada].aciertos);
+					if(aciertos<tareas[tareaSeleccionada].aciertos){
 						setTimeout(procesaTiempo, milisegundosRetardo);
 					}else{
 						$('#areaTexto').text("Completado");
+						$('#filaTarea'+tareaSeleccionada).addClass('acierto');
+						$('#listaTareas').listview('refresh');
 					}
 				}else{
 					$("#areaTexto").removeClass("acierto");					
 					$("#areaTexto").removeClass("fin_tiempo");
-					pregunta=tarea.preguntas[aleatorio(0,tarea.preguntas.length-1)];
+					pregunta=tareas[tareaSeleccionada].preguntas[aleatorio(0,tareas[tareaSeleccionada].preguntas.length-1)];
 					$('#areaTexto').text(pregunta.texto);
 					$(".boton_numero").prop("disabled",false);
-					tiempoRestante=tarea.tiempo;
+					tiempoRestante=tareas[tareaSeleccionada].tiempo;
 					respuesta="";			
 					$("#slider-1").val("0").slider().slider("refresh");;
 					setTimeout(procesaTiempo, milisegundosRetardo);
@@ -318,7 +321,7 @@
 			background-color:red;
 		}
 		.acierto{
-			background-color:green;
+			background-color:lime !important;
 		}
 		.boton_numero{}
 	</style>
